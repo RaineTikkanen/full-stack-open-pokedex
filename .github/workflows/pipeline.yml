@@ -1,4 +1,6 @@
 name: Deployment pipeline
+env:
+  SKIP: ${{ contains(github.event.head_commit.message, '#skip') }}
 
 on:
   push:
@@ -9,6 +11,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  
   simple_deployment_pipeline:
     runs-on: ubuntu-latest
     steps:
@@ -35,7 +38,7 @@ jobs:
           path: playwright-report/
           retention-days: 30
   fly_deployment:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' }}  && !SKIP
     name: Deploy app
     needs: simple_deployment_pipeline
     runs-on: ubuntu-latest
@@ -47,6 +50,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   tag_release:
+    if: ${{ github.event_name == 'push' }}  && !SKIP
     needs: simple_deployment_pipeline
     runs-on: ubuntu-latest
     steps:

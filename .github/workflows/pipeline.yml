@@ -51,7 +51,7 @@ jobs:
       - name: Success notification
         uses: rjstone/discord-webhook-notify@c2597273488aeda841dd1e891321952b51f7996f
         with:
-          webhook_url: ${{ secrets.WEBHOOK_URL }}
+          webhookUrl: ${{ secrets.WEBHOOK_URL }}
           severity: info
           details: 'New version deployed successfully!'
   tag_release:

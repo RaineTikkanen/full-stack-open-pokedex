@@ -52,17 +52,24 @@ jobs:
         if: ${{ success() }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
+          DISCORD_EMBEDS: '[{
+            "title": "Deployment Successful", 
+            "description": "New version of the project has been deployed successfully.", 
+            "color": "green"
+            }]'
         uses: Ilshidur/action-discord@d2594079a10f1d6739ee50a2471f0ca57418b554
-        with:
-          args: 'New version of the project has been deployed successfully.'
-      - name: Discord notification
-        if: ${{ success() }}
+      - name: hash
+        run: echo ${{ github.sha }}
+      - name: Failure notifications
+        if: ${{ failure() }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
-          DISCORD_EMBEDS: '[{"title": "Deployment Successful", "description": "New version of the project has been deployed successfully."}]'
+          DISCORD_EMBEDS: '[{
+            "title": "Deployment Failed", 
+            "description": "New version of the project failed to deploy.",
+            "color": "red"
+            }]'
         uses: Ilshidur/action-discord@d2594079a10f1d6739ee50a2471f0ca57418b554
-        with:
-          args: 'New version of the project has been deployed successfully.'
   tag_release:
     if: ${{ (github.event_name == 'push') && (contains(github.event.head_commit.message, '#skip') == false) }}
     needs: simple_deployment_pipeline

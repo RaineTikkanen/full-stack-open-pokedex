@@ -48,12 +48,12 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      - name: Success notification
-        uses: rjstone/discord-webhook-notify@v2.1.1
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
+        uses: Ilshidur/action-discord@d2594079a10f1d6739ee50a2471f0ca57418b554
         with:
-          webhookUrl: ${{ secrets.WEBHOOK_URL }}
-          severity: info
-          details: 'New version deployed successfully!'
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
   tag_release:
     if: ${{ (github.event_name == 'push') && (contains(github.event.head_commit.message, '#skip') == false) }}
     needs: simple_deployment_pipeline

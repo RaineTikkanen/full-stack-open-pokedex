@@ -64,7 +64,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
           DISCORD_EMBEDS: '[{
             "title": "Deployment Failed", 
-            "description": "New version of the project failed to deploy.",
+            "description": "Commit ${{ github.sha }} failed to deploy.",
             "color": "red"
             }]'
         uses: Ilshidur/action-discord@d2594079a10f1d6739ee50a2471f0ca57418b554

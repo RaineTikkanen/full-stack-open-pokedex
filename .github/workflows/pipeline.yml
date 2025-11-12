@@ -52,9 +52,7 @@ jobs:
         if: ${{ success() }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
-          DISCORD_EMBEDS: '[{"title": "Deployment Successful", 
-            "description": "New version of the project has been deployed successfully.",
-            "color": "green"}]'
+          DISCORD_EMBEDS: '[{"title": "Deployment Successful", "description": "New version of the project has been deployed successfully.", "color": "green"}]'
         uses: Ilshidur/action-discord@d2594079a10f1d6739ee50a2471f0ca57418b554
       - name: Failure notifications
         if: ${{ failure() }}

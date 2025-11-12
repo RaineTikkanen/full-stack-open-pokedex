@@ -49,7 +49,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       - name: Success notification
-        uses: rjstone/discord-webhook-notify@c2597273488aeda841dd1e891321952b51f7996f
+        uses: rjstone/discord-webhook-notify@v2.1.1
         with:
           webhookUrl: ${{ secrets.WEBHOOK_URL }}
           severity: info

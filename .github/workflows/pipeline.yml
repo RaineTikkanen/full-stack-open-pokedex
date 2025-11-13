@@ -72,14 +72,14 @@ jobs:
       - name: github context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: echo @${{ needs.tag_release.outputs.new_tag }}
       - name: Success notifications
         if: ${{ needs.fly_deployment.result == 'success' && needs.tag_release.result == 'success' }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
           DISCORD_EMBEDS: '[{
             "title": "Deployment Succeeded", 
-            "description": "New version deployed successfully.",
+            "description": "Version deployed successfully.",
             "color": 647195
             }]'
         uses: Ilshidur/action-discord@d2594079a10f1d6739ee50a2471f0ca57418b554

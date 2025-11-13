@@ -69,10 +69,10 @@ jobs:
     needs: [fly_deployment, tag_release]
     runs-on: ubuntu-latest
     steps:
-      - name: github context
+      - name: tag output
         env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo @${{ needs.tag_release.outputs.new_tag }}
+          TAG: ${{ needs.tag_release.outputs.new_tag }}
+        run: echo "$TAG"
       - name: Success notifications
         if: ${{ needs.fly_deployment.result == 'success' && needs.tag_release.result == 'success' }}
         env:

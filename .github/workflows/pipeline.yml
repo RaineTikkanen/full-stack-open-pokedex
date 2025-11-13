@@ -72,17 +72,13 @@ jobs:
     needs: [fly_deployment, tag_release]
     runs-on: ubuntu-latest
     steps:
-      - name: tag output
-        env:
-          TAG: ${{ needs.tag_release.outputs.new_tag }}
-        run: echo "$TAG"
       - name: Success notifications
         if: ${{ needs.fly_deployment.result == 'success' && needs.tag_release.result == 'success' }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
           DISCORD_EMBEDS: '[{
             "title": "Deployment Succeeded", 
-            "description": "Version deployed successfully.",
+            "description": "Version ${{ needs.tag_release.outputs.new_tag}} deployed successfully.",
             "color": 647195
             }]'
         uses: Ilshidur/action-discord@d2594079a10f1d6739ee50a2471f0ca57418b554

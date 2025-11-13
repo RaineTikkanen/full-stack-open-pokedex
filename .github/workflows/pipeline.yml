@@ -69,11 +69,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
   discord_notification:
-    needs: [fly_deployment, tag_release]
     runs-on: ubuntu-latest
     steps:
       - name: Success notifications
-        if: ${{ needs.fly_deployment.result == 'success' && needs.tag_release.result == 'success' }}
+        if: ${{ needs.fly_deployment.result == 'success' }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
           DISCORD_EMBEDS: '[{

@@ -37,12 +37,17 @@ jobs:
           path: playwright-report/
           retention-days: 30
   fly_deployment:
+    
     if: ${{ (github.event_name == 'push') && !(contains(github.event.head_commit.message, '#skip')) }}
     name: Deploy app
     needs: simple_deployment_pipeline
     runs-on: ubuntu-latest
     concurrency: deploy-group    # optional: ensure only one action runs at a time
     steps:
+      - name: github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - id: deploy
@@ -64,7 +69,10 @@ jobs:
     needs: [fly_deployment, tag_release]
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.event.release.tag_name }}
+      - name: github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: Success notifications
         if: ${{ needs.fly_deployment.result == 'success' && needs.tag_release.result == 'success' }}
         env:
@@ -76,7 +84,7 @@ jobs:
             }]'
         uses: Ilshidur/action-discord@d2594079a10f1d6739ee50a2471f0ca57418b554
       - name: Failure notifications
-        if: ${{ needs.fly_deployment.result != 'failure' }}
+        if: ${{ needs.fly_deployment.result == 'failure' }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.WEBHOOK_URL }}
           DISCORD_EMBEDS: '[{

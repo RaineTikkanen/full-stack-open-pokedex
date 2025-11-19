@@ -11,4 +11,5 @@ jobs:
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@b716ccb6645355dd9fcce8002ce460e5474f7f00
         with:
-          url: https://full-stack-open-pokedex-patient-thunder-521.fly.dev/
+          url: https://full-stack-open-pokedex-patient-thunder-3521.fly.dev/
+
